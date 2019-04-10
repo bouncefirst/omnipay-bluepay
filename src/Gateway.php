@@ -2,6 +2,7 @@
 
 namespace Omnipay\BluePay;
 
+use Omnipay\BluePay\Message\AchSaleRequest;
 use Omnipay\BluePay\Message\AuthRequest;
 use Omnipay\BluePay\Message\CaptureRequest;
 use Omnipay\BluePay\Message\RefundRequest;
@@ -27,16 +28,14 @@ class Gateway extends AbstractGateway
         return 'BluePay';
     }
 
-
     public function getDefaultParameters()
     {
-        return array(
+        return [
             'accountId' => '',
             'secretKey' => '',
             'testMode' => 0,
-        );
+        ];
     }
-
 
     public function getAccountId()
     {
@@ -48,7 +47,6 @@ class Gateway extends AbstractGateway
         return $this->setParameter('accountId', $value);
     }
 
-
     public function getSecretKey()
     {
         return $this->getParameter('secretKey');
@@ -58,7 +56,6 @@ class Gateway extends AbstractGateway
     {
         return $this->setParameter('secretKey', $value);
     }
-
 
     public function getToken()
     {
@@ -70,7 +67,6 @@ class Gateway extends AbstractGateway
         return $this->setParameter('token', $value);
     }
 
-
     public function getCustomId1()
     {
         return $this->getParameter('customId1');
@@ -80,7 +76,6 @@ class Gateway extends AbstractGateway
     {
         return $this->setParameter('customId1', $value);
     }
-
 
     public function getCustomId2()
     {
@@ -92,7 +87,6 @@ class Gateway extends AbstractGateway
         return $this->setParameter('customId2', $value);
     }
 
-
     public function getOrderId()
     {
         return $this->getParameter('orderId');
@@ -102,7 +96,6 @@ class Gateway extends AbstractGateway
     {
         return $this->setParameter('orderId', $value);
     }
-
 
     public function getInvoiceId()
     {
@@ -114,7 +107,6 @@ class Gateway extends AbstractGateway
         return $this->setParameter('invoiceId', $value);
     }
 
-
     public function getMemo()
     {
         return $this->getParameter('memo');
@@ -125,54 +117,47 @@ class Gateway extends AbstractGateway
         return $this->setParameter('memo', $value);
     }
 
-
     public function getDeveloperMode()
     {
         return $this->getParameter('developerMode');
     }
-
 
     public function setDeveloperMode($value)
     {
         $this->setParameter('developerMode', $value);
     }
 
-
-    public function authorize(array $parameters = array())
+    public function authorize(array $parameters = [])
     {
-        return $this->createRequest('\Omnipay\BluePay\Message\AuthRequest', $parameters);
+        return $this->createRequest(AuthRequest::class, $parameters);
     }
 
-
-    public function capture(array $parameters = array())
+    public function capture(array $parameters = [])
     {
-        return $this->createRequest('\Omnipay\BluePay\Message\CaptureRequest', $parameters);
+        return $this->createRequest(CaptureRequest::class, $parameters);
     }
 
-
-    public function refund(array $parameters = array())
+    public function refund(array $parameters = [])
     {
-        return $this->createRequest('\Omnipay\BluePay\Message\RefundRequest', $parameters);
+        return $this->createRequest(RefundRequest::class, $parameters);
     }
 
-
-    public function purchase(array $parameters = array())
+    public function purchase(array $parameters = [])
     {
-        return $this->createRequest('\Omnipay\BluePay\Message\SaleRequest', $parameters);
+        return $this->createRequest(SaleRequest::class, $parameters);
     }
 
-
-    public function achPurchase(array $parameters = array())
+    public function achPurchase(array $parameters = [])
     {
-        return $this->createRequest('\Omnipay\BluePay\Message\AchSaleRequest', $parameters);
+        return $this->createRequest(AchSaleRequest::class, $parameters);
     }
 
-    public function createCard(array $parameters = array())
+    public function createCard(array $parameters = [])
     {
         if (isset($parameters['action']) && $parameters['action'] == 'Purchase') {
-            return $this->createRequest('\Omnipay\BluePay\Message\CreateCardPurchaseRequest', $parameters);
-        } else {
-            return $this->createRequest('\Omnipay\BluePay\Message\CreateCardRequest', $parameters);
+            return $this->createRequest(CreateCardPurchaseRequest::class, $parameters);
         }
+
+        return $this->createRequest(CreateCardRequest::class, $parameters);
     }
 }
