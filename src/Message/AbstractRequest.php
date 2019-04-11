@@ -189,14 +189,6 @@ abstract class AbstractRequest extends \Omnipay\Common\Message\AbstractRequest
         // cribbed from https://github.com/thephpleague/omnipay-stripe/blob/master/src/Message/AbstractRequest.php
         // Fist add in my tamper-proof-seal
         $data = array_merge($data, $this->tps($data));
-        $this->httpClient->getEventDispatcher()->addListener(
-            'request.error',
-            function ($event) {
-                if ($event['response']->isClientError()) {
-                    $event->stopPropagation();
-                }
-            }
-        );
 
         $httpResponse = $this->httpClient->request('POST', $this->getEndpoint(), [], http_build_query($data));
 
